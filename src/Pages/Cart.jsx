@@ -1,24 +1,96 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MyStore } from "../Context/MyContext";
 import CartProductsCard from "../Components/CartProductsCard";
-import { ShoppingBag, Trash2, ArrowRight } from "lucide-react";
-import { Link } from "react-router";
+import {
+  ShoppingBag,
+  Trash2,
+  ArrowRight,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router";
 
 const Cart = () => {
   let { cartItems, clearCart } = useContext(MyStore);
+  const navigate = useNavigate();
+
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const [countdown, setCountdown] = useState(3);
 
   const totalAmount = cartItems.reduce(
     (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
     0,
   );
-
   const totalQuantity = cartItems.reduce(
     (acc, item) => acc + (item.quantity || 1),
     0,
   );
 
+  const handleCheckout = () => {
+    setOrderPlaced(true);
+    clearCart();
+  };
+
+  useEffect(() => {
+    let timer;
+    if (orderPlaced) {
+      timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            navigate("/");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [orderPlaced, navigate]);
+
   return (
-    <div className="min-h-screen text-white pt-8 pb-20 max-w-6xl mx-auto px-4 space-y-8">
+    <div className="min-h-screen text-white pt-8 pb-20 max-w-6xl mx-auto px-4 space-y-8 relative">
+      {orderPlaced && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="border border-zinc-800 rounded-3xl p-8 sm:p-10 bg-zinc-950/90 backdrop-blur-xl shadow-2xl text-center max-w-md w-full space-y-6 relative overflow-hidden">
+            <div className="w-20 h-20 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-xl shadow-emerald-500/20">
+              <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
+            </div>
+
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-950/30 text-[11px] font-medium text-emerald-300">
+                <Sparkles className="w-3.5 h-3.5" /> Order Placed
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight text-white">
+                Thank You For Your Order!
+              </h2>
+              <p className="text-xs text-zinc-400 font-light leading-relaxed">
+                Your items have been processed successfully. Redirecting to home
+                page in{" "}
+                <span className="font-mono text-emerald-400 font-bold text-sm">
+                  {countdown}s
+                </span>
+                ...
+              </p>
+            </div>
+
+            <div className="w-full bg-zinc-900 rounded-full h-1 overflow-hidden border border-zinc-800">
+              <div
+                className="bg-emerald-400 h-full transition-all duration-1000 ease-linear"
+                style={{ width: `${(countdown / 3) * 100}%` }}
+              />
+            </div>
+
+            <button
+              onClick={() => navigate("/")}
+              className="w-full py-3 rounded-full text-xs font-semibold bg-white text-black hover:bg-zinc-200 transition active:scale-[0.98] cursor-pointer"
+            >
+              Return Home Now
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between border-b border-zinc-800/80 pb-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
@@ -100,7 +172,10 @@ const Cart = () => {
               </span>
             </div>
 
-            <button className="w-full py-3.5 rounded-full bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-zinc-200 transition active:scale-[0.98] cursor-pointer shadow-lg">
+            <button
+              onClick={handleCheckout}
+              className="w-full py-3.5 rounded-full bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-zinc-200 transition active:scale-[0.98] cursor-pointer shadow-lg"
+            >
               Proceed to Checkout
             </button>
           </div>

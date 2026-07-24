@@ -7,6 +7,8 @@ import Register from "../Pages/Authentication/Register";
 import Product from "../Pages/Product";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Cart from "../Pages/Cart";
+import NotFound from "../Components/NotFound";
+import PublicRoutes from "./PublicRoutes";
 
 const AppRoutes = () => {
   return (
@@ -20,8 +22,23 @@ const AppRoutes = () => {
             </ProtectedRoutes>
           }
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoutes>
+              <Login />
+            </PublicRoutes>
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            <PublicRoutes>
+              <Register />
+            </PublicRoutes>
+          }
+        />
         <Route
           path="/about"
           element={
@@ -54,6 +71,7 @@ const AppRoutes = () => {
             </ProtectedRoutes>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
