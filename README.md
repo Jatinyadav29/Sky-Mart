@@ -2,7 +2,7 @@
 
 A minimal, dark-mode glassmorphic e-commerce web application designed for modern shopping experiences.
 
-🌐 **Live Demo:** [Live Link](https://www.google.com/search?q=https://your-deployment-link.com)
+🌐 **Live Demo:** [Live Link](https://sky-mart-woad.vercel.app/)
 
 ---
 
