@@ -6,7 +6,7 @@ import { ArrowRight, Lock, Mail, Sparkles, ShieldCheck } from "lucide-react";
 
 const Login = () => {
   const [toggle, setToggle] = useState(true);
-  let { users, setCurrentUser } = useContext(MyStore);
+  let { users, setCurrentUser, clearCart } = useContext(MyStore);
   let navigate = useNavigate();
   let {
     register,
@@ -22,6 +22,8 @@ const Login = () => {
 
     if (match) {
       setCurrentUser(match);
+      clearCart();
+      localStorage.removeItem("cartItems");
       localStorage.setItem("currentUser", JSON.stringify(match));
       navigate("/");
     } else {

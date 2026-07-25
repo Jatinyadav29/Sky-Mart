@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 const Register = () => {
-  let { users, setUsers, setCurrentUser } = useContext(MyStore);
+  let { users, setUsers, setCurrentUser, clearCart } = useContext(MyStore);
   let navigate = useNavigate();
 
   let {
@@ -29,6 +29,9 @@ const Register = () => {
     const { confirmPassword, ...submitData } = data;
     const newUser = { ...submitData, id: nanoid() };
     let arr = [...users, newUser];
+
+    clearCart();
+    localStorage.removeItem("cartItems");
 
     setUsers(arr);
     localStorage.setItem("users", JSON.stringify(arr));
