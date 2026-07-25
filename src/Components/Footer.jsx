@@ -11,7 +11,7 @@ export default function Footer() {
           </div>
 
           <p className="text-zinc-200 text-lg md:text-xl font-light leading-snug tracking-tight">
-            A task of Sheryians COHORT3.
+            A task of Sheryians COHORT3 - Made By JATIN.
           </p>
         </div>
 
@@ -31,8 +31,8 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto mt-6 pt-4 flex flex-col sm:flex-row justify-between items-center text-[11px] text-zinc-600 font-mono gap-2">
-        <p>© {new Date().getFullYear()} SHERYIANS INC. ALL RIGHTS RESERVED.</p>
-        <p className="tracking-wider">Made ny Jatin</p>
+        <p>© {new Date().getFullYear()} SHERYIANS CODING SCHOOL.</p>
+        <p className="tracking-wider">Made By Jatin</p>
       </div>
     </footer>
   );

@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 const Register = () => {
-  let { users, setUsers } = useContext(MyStore);
+  let { users, setUsers, setCurrentUser } = useContext(MyStore);
   let navigate = useNavigate();
 
   let {
@@ -27,13 +27,17 @@ const Register = () => {
 
   let formSubmit = (data) => {
     const { confirmPassword, ...submitData } = data;
-    let arr = [...users, { ...submitData, id: nanoid() }];
+    const newUser = { ...submitData, id: nanoid() };
+    let arr = [...users, newUser];
 
     setUsers(arr);
     localStorage.setItem("users", JSON.stringify(arr));
 
+    setCurrentUser(newUser);
+    localStorage.setItem("currentUser", JSON.stringify(newUser));
+
     reset();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
